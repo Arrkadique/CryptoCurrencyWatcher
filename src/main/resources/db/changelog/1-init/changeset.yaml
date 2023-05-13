@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: '10'
+      author: arrkadique
+      comment: '1-init'
+      changes:
+        - tagDatabase:
+            tag: 1-init
+        - sqlFile:
+            relativeToChangelogFile: true
+            path: 1-init/data/data.sql
+      rollback:
+        - sqlFile:
+            relativeToChangelogFile: true
+            path: 1-init/data/rollback.sql
