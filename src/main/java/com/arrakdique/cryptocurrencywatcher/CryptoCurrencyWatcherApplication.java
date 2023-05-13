@@ -8,6 +8,7 @@ public class CryptoCurrencyWatcherApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CryptoCurrencyWatcherApplication.class, args);
+
 	}
 
 }

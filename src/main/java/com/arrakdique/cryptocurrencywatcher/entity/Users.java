@@ -22,5 +22,5 @@ public class Users {
     private String username;
 
     @Column(name = "registration_price", nullable = false)
-    private float registrationPrice;
+    private double registrationPrice;
 }

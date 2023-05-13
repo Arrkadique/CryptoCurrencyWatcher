@@ -1,10 +1,7 @@
 package com.arrakdique.cryptocurrencywatcher.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "coins")
@@ -12,7 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Coins {
+@Builder
+public class Coin {
 
     @Id
     private Long id;
@@ -21,5 +19,5 @@ public class Coins {
     private String symbol;
 
     @Column(nullable = false)
-    private float price;
+    private double price;
 }
