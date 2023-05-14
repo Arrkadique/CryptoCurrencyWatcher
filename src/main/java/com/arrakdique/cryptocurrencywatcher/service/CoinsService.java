@@ -47,11 +47,19 @@ public class CoinsService {
     }
 
     private Coin createNewCoin(CoinsDto coinsDto) {
-        return new Coin(coinsDto.getId(), coinsDto.getSymbol(), coinsDto.getPrice_usd());
+        return Coin.builder()
+                .id(coinsDto.getId())
+                .symbol(coinsDto.getSymbol())
+                .price(coinsDto.getPrice_usd())
+                .build();
     }
 
     public Coin getCoinBySymbol(String symbol){
         return coinsRepository.findBySymbol(symbol);
+    }
+
+    public List<Coin> getAllCoins(){
+        return coinsRepository.findAll();
     }
 
 }

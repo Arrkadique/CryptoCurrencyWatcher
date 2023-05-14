@@ -5,7 +5,8 @@ create table if not exists users
 (
     id bigserial primary key,
     username varchar not null,
-    registration_price float not null
+    symbol varchar not null,
+    price float not null
 );
 
 create table if not exists coins

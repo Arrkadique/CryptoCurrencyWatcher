@@ -1,10 +1,8 @@
 package com.arrakdique.cryptocurrencywatcher.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "users")
@@ -12,7 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Users {
+@SuperBuilder
+public class Users extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +20,4 @@ public class Users {
     @Column(nullable = false)
     private String username;
 
-    @Column(name = "registration_price", nullable = false)
-    private double registrationPrice;
 }
