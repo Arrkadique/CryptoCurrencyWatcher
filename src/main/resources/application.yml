@@ -11,3 +11,16 @@ spring:
   liquibase:
     enabled: true
     change-log: db/changelog/db.changelog-master.yaml
+
+app:
+  percentForComparison: 0.01
+  requestTimeoutInSec: 5
+  parallelism: 3
+  host: "https://api.coinlore.net/api/ticker/?id="
+  coinsId:
+    - 90
+    - 48543
+    - 80
+
+
+
