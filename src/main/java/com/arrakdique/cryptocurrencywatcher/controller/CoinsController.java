@@ -1,5 +1,6 @@
 package com.arrakdique.cryptocurrencywatcher.controller;
 
+import com.arrakdique.cryptocurrencywatcher.entity.Coin;
 import com.arrakdique.cryptocurrencywatcher.service.CoinsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RestController("/coins")
+@RestController()
 public class CoinsController {
     private CoinsService coinsService;
 
@@ -24,9 +25,8 @@ public class CoinsController {
     }
 
     @GetMapping("/{symbol}")
-    public float getCoinPrice(@PathVariable String symbol){
-
-        return 0F;
+    public Coin getCoinPrice(@PathVariable String symbol){
+        return coinsService.getCoinBySymbol(symbol);
     }
 
 

@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -21,22 +22,36 @@ public class CoinsService {
     private final CoinsRepository coinsRepository;
     private final RestTemplate restTemplate;
     public List<Coin> makeRequest(){
-        List<Coin> coins = new ArrayList<>();
+        List<CoinsDto> coinsDto = new ArrayList<>();
         ResponseEntity<CoinsDto[]> response;
-        CoinsDto coinsDto;
         for (CoinsRequests url: CoinsRequests.values()) {
             response = restTemplate.getForEntity(url.getUrl(), CoinsDto[].class);
-            coinsDto = Objects.requireNonNull(response.getBody())[0];
-            coins.add(processResponse(coinsDto));
+            coinsDto.add(Objects.requireNonNull(response.getBody())[0]);
         }
-        coinsRepository.saveAll(coins);
 
         log.info("Fetched successful");
-        return coins;
+        return saveCoins(coinsDto);
     }
 
-    public Coin processResponse(CoinsDto coinsDto){
+    public List<Coin> saveCoins(List<CoinsDto> resultCoins){
+        List<Coin> coins = resultCoins.stream()
+                .map(this::getOrCreateCoins)
+                .collect(Collectors.toList());
+        return coinsRepository.saveAll(coins);
+    }
+
+    public Coin getOrCreateCoins(CoinsDto coinsDto){
+        Coin coin = coinsRepository.findById(coinsDto.getId()).orElse(this.createNewCoin(coinsDto));
+        coin.setPrice(coinsDto.getPrice_usd());
+        return coin;
+    }
+
+    private Coin createNewCoin(CoinsDto coinsDto) {
         return new Coin(coinsDto.getId(), coinsDto.getSymbol(), coinsDto.getPrice_usd());
+    }
+
+    public Coin getCoinBySymbol(String symbol){
+        return coinsRepository.findBySymbol(symbol);
     }
 
 }

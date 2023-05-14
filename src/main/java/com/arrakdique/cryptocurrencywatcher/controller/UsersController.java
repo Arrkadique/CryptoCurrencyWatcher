@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/users")
+@RestController()
 public class UsersController {
 
-    @PostMapping("/new")
+    @PostMapping("/invoke")
     public Users createUser(){
 
         return null;
