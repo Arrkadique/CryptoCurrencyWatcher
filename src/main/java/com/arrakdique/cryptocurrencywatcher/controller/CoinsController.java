@@ -2,17 +2,17 @@ package com.arrakdique.cryptocurrencywatcher.controller;
 
 import com.arrakdique.cryptocurrencywatcher.entity.Coin;
 import com.arrakdique.cryptocurrencywatcher.service.CoinsService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@AllArgsConstructor
-@RestController()
+@RequiredArgsConstructor
+@RestController
 public class CoinsController {
-    private CoinsService coinsService;
+    private final CoinsService coinsService;
 
     @GetMapping("/all")
     public List<Coin> getAllCoins(){
@@ -20,8 +20,8 @@ public class CoinsController {
     }
 
     @GetMapping("/{symbol}")
-    public Coin getCoinPrice(@PathVariable String symbol){
-        return coinsService.getCoinBySymbol(symbol);
+    public double getCoinPrice(@PathVariable String symbol){
+        return coinsService.getCoinBySymbol(symbol).getPrice();
     }
 
 

@@ -4,6 +4,7 @@ import com.arrakdique.cryptocurrencywatcher.configuration.properties.Application
 import com.arrakdique.cryptocurrencywatcher.dto.CoinsDto;
 import com.arrakdique.cryptocurrencywatcher.entity.Coin;
 import com.arrakdique.cryptocurrencywatcher.repository.CoinsRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,12 @@ public class CoinsService {
     private final RestTemplate restTemplate;
     private final ApplicationProperties properties;
 
-    public List<CoinsDto> makeRequest(){
+    public List<CoinsDto> makeRequest() {
         List<CoinsDto> loadedCoins = new ArrayList<>();
         ExecutorService executorService = null;
 
         List<Callable<CoinsDto>> callables = properties.getCoinsId().stream()
-                        .map(coinId -> getCall(this::executeRequest, coinId))
+                .map(coinId -> getCall(this::executeRequest, coinId))
                 .toList();
 
         try {
@@ -45,8 +46,8 @@ public class CoinsService {
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
-        } catch (Exception e){
-            if(executorService != null){
+        } catch (Exception e) {
+            if (executorService != null) {
                 executorService.shutdown();
             }
             log.error("Failed to initiate future", e);
@@ -60,33 +61,36 @@ public class CoinsService {
         return () -> call.apply(coinId);
     }
 
-    public CoinsDto getFutureResult(Future<CoinsDto> future){
-        if(future.isDone()){
+    public CoinsDto getFutureResult(Future<CoinsDto> future) {
+        if (future.isDone()) {
             try {
                 return future.get();
             } catch (Exception e) {
+                e.printStackTrace();
                 log.error("Failed to fetch stat. {}", e.getMessage());
             }
         }
         return null;
     }
 
-    public CoinsDto executeRequest(Long id){
+    public CoinsDto executeRequest(Long id) {
         ResponseEntity<CoinsDto[]> response = restTemplate
                 .getForEntity(properties.getHost() + id, CoinsDto[].class);
         return Objects.requireNonNull(response.getBody())[0];
     }
 
-    public void saveCoins(List<CoinsDto> resultCoins){
+    @Transactional
+    public void saveCoins(List<CoinsDto> resultCoins) {
         List<Coin> coins = resultCoins.stream()
                 .map(this::getOrCreateCoins)
                 .collect(Collectors.toList());
         coinsRepository.saveAll(coins);
     }
 
-    public Coin getOrCreateCoins(CoinsDto coinsDto){
-        Coin coin = coinsRepository.findById(coinsDto.getId()).orElse(this.createNewCoin(coinsDto));
-        coin.setPrice(coinsDto.getPrice_usd());
+    public Coin getOrCreateCoins(CoinsDto coinsDto) {
+        Coin coin = coinsRepository.findById(coinsDto.getId())
+                .orElse(this.createNewCoin(coinsDto));
+        coin.setPrice(coinsDto.getPriceUsd());
         return coin;
     }
 
@@ -94,15 +98,15 @@ public class CoinsService {
         return Coin.builder()
                 .id(coinsDto.getId())
                 .symbol(coinsDto.getSymbol())
-                .price(coinsDto.getPrice_usd())
+                .price(coinsDto.getPriceUsd())
                 .build();
     }
 
-    public Coin getCoinBySymbol(String symbol){
+    public Coin getCoinBySymbol(String symbol) {
         return coinsRepository.findBySymbol(symbol);
     }
 
-    public List<Coin> getAllCoins(){
+    public List<Coin> getAllCoins() {
         return coinsRepository.findAll();
     }
 

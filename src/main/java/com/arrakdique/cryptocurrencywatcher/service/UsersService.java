@@ -1,10 +1,8 @@
 package com.arrakdique.cryptocurrencywatcher.service;
 
 import com.arrakdique.cryptocurrencywatcher.entity.Users;
-import com.arrakdique.cryptocurrencywatcher.repository.CoinsRepository;
 import com.arrakdique.cryptocurrencywatcher.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

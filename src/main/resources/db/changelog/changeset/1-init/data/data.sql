@@ -1,7 +1,7 @@
 --liquibase formatted sql
 --changeset User:1
 
-create table if not exists users
+create table users
 (
     id bigserial primary key,
     username varchar not null,
@@ -9,7 +9,7 @@ create table if not exists users
     price float not null
 );
 
-create table if not exists coins
+create table coins
 (
     id bigserial primary key,
     symbol varchar not null,

@@ -1,7 +1,6 @@
 package com.arrakdique.cryptocurrencywatcher.entity;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
