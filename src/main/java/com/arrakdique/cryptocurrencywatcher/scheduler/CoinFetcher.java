@@ -39,7 +39,7 @@ public class CoinFetcher {
         usersService.getAllUsers().forEach(user -> {
             Coin coin = cache.get(user.getSymbol());
             if (Objects.isNull(coin)) {
-                coinsService.getCoinBySymbol(user.getSymbol());
+                coin = coinsService.getCoinBySymbol(user.getSymbol());
                 cache.put(coin.getSymbol(), coin);
             }
             checkPrice(user, coin);
