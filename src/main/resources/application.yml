@@ -14,7 +14,7 @@ spring:
 
 app:
   percentForComparison: 1
-  requestTimeoutInSec: 5
+  requestTimeoutInSec: 7
   parallelism: 3
   host: "https://api.coinlore.net/api/ticker/?id="
   coinsId:
@@ -24,3 +24,7 @@ app:
   initialDelayInMillis: 3000
   fixedRateInMillis: 60000
 
+server:
+  error:
+    include-exception: true
+    include-message: always
