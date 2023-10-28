@@ -14,7 +14,7 @@ public class ApplicationProperties {
     private float percentForComparison;
     private long requestTimeoutInSec;
     private int parallelism;
-    private String host;
+    public String host;
     private List<Long> coinsId;
     private long fixedRateInMillis;
     private long initialDelayInMillis;

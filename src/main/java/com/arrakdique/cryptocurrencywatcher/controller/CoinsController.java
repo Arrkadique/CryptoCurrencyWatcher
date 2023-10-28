@@ -4,6 +4,8 @@ import com.arrakdique.cryptocurrencywatcher.dto.CoinsResponseDto;
 import com.arrakdique.cryptocurrencywatcher.entity.Coin;
 import com.arrakdique.cryptocurrencywatcher.entity.Users;
 import com.arrakdique.cryptocurrencywatcher.service.CoinsService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,8 +29,11 @@ public class CoinsController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Users.class)) })})
     @GetMapping("/all")
-    public List<Coin> getAllCoins(){
-        return coinsService.getAllCoins();
+    public List<Coin> getAllCoins() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Coin> allCoins = coinsService.getAllCoins();
+        List<Coin> collect = allCoins.stream().filter(coin -> coin.getPrice() > 50).toList();
+        return collect;
     }
 
     @Operation(summary = "Get coin price by symbol")

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Builder
 @Data
-@Component
 public class ResponseError {
     private String message;
     private HttpStatus httpStatus;
